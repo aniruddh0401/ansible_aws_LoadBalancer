@@ -1,0 +1,7 @@
+[backend_server]
+192.168.0.22 ansible_user=root ansible_ssh_pass=root ansible_connection=ssh
+13.126.17.134 ansible_user=ec2-user ansible_ssh_private_key=/ansible_ws1/loadBalancer2/aws_ansible_key.pem  ansible_connection=ssh
+13.235.16.140 ansible_user=ec2-user ansible_ssh_private_key=/ansible_ws1/loadBalancer2/aws_ansible_key.pem  ansible_connection=ssh
+
+[frontend_server]
+192.168.0.3 ansible_user=root ansible_ssh_pass=root ansible_connection=ssh

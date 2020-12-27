@@ -1,0 +1,54 @@
+- hosts: backend_server
+  tasks :
+          - package :
+                  name : "httpd"
+                  state : present
+
+          - package : 
+                  name : "php"
+                  state : present
+          - copy :
+                  src : "/ansible_ws1/loadBalancer/index.php"
+                  dest : "/var/www/html/"
+
+          - service :
+                  name : "httpd"
+                  state : started
+
+          - package : 
+                  name : firewalld
+                  state : present
+            ignore_errors : true
+
+          - service : 
+                  name : firewalld
+                  state : started
+
+          - name: permit traffic on port 80
+            ansible.posix.firewalld:
+                  port : "80/tcp"
+                  state: enabled
+                  permanent : yes
+                  immediate : yes
+            ignore_errors : true
+
+- hosts : frontend_server
+  tasks :
+          - package :
+                  name : "haproxy"
+                  state : present
+
+          - template :
+                  dest : "/etc/haproxy/haproxy.cfg"
+                  src : "/etc/haproxy/haproxy.cfg"
+
+          - service :
+                  name : "haproxy"
+                  state : restarted
+          - name: permit traffic on the port 5000
+            ansible.posix.firewalld:
+                  port : "5000/tcp"
+                  state : enabled
+                  immediate : yes
+                  permanent : yes
+            ignore_errors : true
